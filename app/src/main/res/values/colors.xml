@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#ffffff</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+
+    <color name="bellOff">#d5d5d5</color>
+    <color name="bellOn">#ffd500</color>
+    <color name="bottomNav">#FF8E52</color>
+</resources>

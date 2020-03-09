@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:padding="10dp"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:layout_margin="10dp"
+        android:id="@+id/prioritytv"
+        android:layout_width="180dp"
+        android:layout_height="40dp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="@string/very_important"
+        android:textSize="21sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.058"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.022" />
+
+    <ImageView
+        android:id="@+id/priorityColour"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+
+        android:background="@drawable/circle_colour_priority"
+        android:foregroundGravity="center"
+        app:layout_constraintBottom_toBottomOf="@+id/prioritytv"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.138"
+        app:layout_constraintStart_toEndOf="@+id/prioritytv"
+        app:layout_constraintTop_toTopOf="@+id/prioritytv" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
