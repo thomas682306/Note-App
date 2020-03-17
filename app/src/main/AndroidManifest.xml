@@ -3,6 +3,8 @@
     package="com.example.multiplerecycler">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.VIBRATE"/>
+
 
     <application
         android:allowBackup="true"
@@ -11,10 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
         <activity android:name=".login_signup.profile_page"></activity>
-        <activity android:name=".addNoteActivity" />
-        <activity android:name=".MainActivity" />
+        <activity android:name=".add_Note.addNoteActivity" />
+        <activity android:name=".mainActivity.MainActivity" />
         <activity android:name=".login_signup.Sign_Up" />
         <activity android:name=".login_signup.Login">
             <intent-filter>
@@ -27,8 +28,11 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
+        <receiver android:name=".Notification.AlarmReciever"/>
 
     </application>
+
     <uses-permission android:name="android.permission.VIBRATE"/>
+
 
 </manifest>

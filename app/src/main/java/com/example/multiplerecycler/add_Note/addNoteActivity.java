@@ -1,41 +1,36 @@
-package com.example.multiplerecycler;
+package com.example.multiplerecycler.add_Note;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.TextView;
-import android.widget.Toast;
 
+import com.example.multiplerecycler.mainActivity.MainActivity;
 import com.example.multiplerecycler.R;
-import com.google.firebase.Timestamp;
+import com.example.multiplerecycler.mainActivity.modelClass_note;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 public class addNoteActivity extends AppCompatActivity {
     ArrayList<spinnerClass> spinnerClassArrayList;
-    spinnerAdapter spinnerAdapter;
+    com.example.multiplerecycler.add_Note.spinnerAdapter spinnerAdapter;
     String userID;
     String colourcode;
     EditText headinget,descriptionet;
     Button submit;
     int priority;
-
+    int flag=0;
+    String docId;
     FirebaseFirestore db;
 
     @Override
@@ -46,13 +41,13 @@ public class addNoteActivity extends AppCompatActivity {
         headinget=findViewById(R.id.heading);
         descriptionet=findViewById(R.id.description);
 
+
+
         initSpinner();
 
         final Spinner spinner= findViewById(R.id.spinner);
         spinnerAdapter= new spinnerAdapter(this,spinnerClassArrayList);
         spinner.setAdapter(spinnerAdapter);
-
-
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -70,18 +65,27 @@ public class addNoteActivity extends AppCompatActivity {
             }
 
         });
-
-
-
         userID= FirebaseAuth.getInstance().getUid();
         db=FirebaseFirestore.getInstance();
         submit=findViewById(R.id.addnote_submit);
+
+        Bundle bundle = getIntent().getExtras();
+        if (bundle != null) {
+             String mHeading= bundle.getString("peHeading");
+             String mDescription= bundle.getString("peDescription");
+             headinget.setText(mHeading);
+             descriptionet.setText(mDescription);
+             submit.setText("UPDATE");
+             docId=bundle.getString("path");
+             flag=1;
+        }
+
+
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String heading=headinget.getText().toString();
                 String description=descriptionet.getText().toString();
-                Calendar calendar= Calendar.getInstance();
 
                 //String date=DateFormat.getDateInstance(DateFormat.DATE_FIELD).format(calendar.getTime());
                 SimpleDateFormat simpleDateformat1 = new SimpleDateFormat("dd-MM-yyyy");
@@ -93,18 +97,35 @@ public class addNoteActivity extends AppCompatActivity {
 
 
                 modelClass_note noteObj=new modelClass_note();
-
                 noteObj.setDate(date);
-
                 noteObj.setDay(day);
                 noteObj.setPriority(priority);
                 noteObj.setDescription(description);
                 noteObj.setHeading(heading);
                 noteObj.setHexCode(colourcode);
+                CollectionReference cf=db.collection("users").document(userID).collection("notes");
 
-                db.collection("users").document(userID).collection("notes").add(noteObj);
-                Intent intent= new Intent(addNoteActivity.this,MainActivity.class);
+                if(flag==0) {
+                    cf.add(noteObj);
+                }
+                else if(flag==1){
+                    cf.document(docId).update("date",noteObj.getDate());
+                    cf.document(docId).update("day",noteObj.getDay());
+                    cf.document(docId).update("description",noteObj.getDescription());
+                    cf.document(docId).update("heading",noteObj.getHeading());
+                    cf.document(docId).update("hexcode",noteObj.getHexCode());
+                    cf.document(docId).update("priority",noteObj.getPriority());
+
+
+
+                }
+
+
+
+                Intent intent= new Intent(addNoteActivity.this, MainActivity.class);
                 startActivity(intent);
+                finish();
+
 
 
 
@@ -114,8 +135,20 @@ public class addNoteActivity extends AppCompatActivity {
 
 
 
-
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private void prioritychecker(int mpriority) {
 
@@ -151,5 +184,27 @@ public class addNoteActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onStop()
+    {
+        super.onStop();
+        this.setResult(1);
+    }
 
+
+    @Override
+    public void onDestroy()
+    {
+        super.onDestroy();
+        this.setResult(1);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        Intent intent = new Intent(addNoteActivity.this,MainActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

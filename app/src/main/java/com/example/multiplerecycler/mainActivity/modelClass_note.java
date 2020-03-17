@@ -1,4 +1,4 @@
-package com.example.multiplerecycler;
+package com.example.multiplerecycler.mainActivity;
 
 public class modelClass_note {
     String Heading;
